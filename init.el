@@ -11,7 +11,7 @@
   "Some packages are too good not to have.")
 
 (setq user-emacs-directory (file-name-directory (file-truename (ze/this-file))))
-(add-to-list 'load-path user-emacs-directory)
+;(add-to-list 'load-path user-emacs-directory)
 
 ;; Add external projects to load path. Note that anything installed
 ;; via package system will take precedence since dirs in elpa/ will
@@ -75,8 +75,7 @@
       rainbow-mode
       diminish
       smartparens
-      eval-sexp-fu
-      appearance)))
+      eval-sexp-fu)))
 
 (init--install-packages)
 ;(condition-case nil
@@ -112,7 +111,7 @@
                      ("C-?" . nil)
                      ("C-_" . nil)))
 
-(require 'appearance)
+;(require 'appearance)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;                           ;;
@@ -173,7 +172,7 @@
            :prefix-docstring
            "Prefix for counsel / buffers / filesystem / windows-layout commands")
 
-(eval-after-load 'shell '(require 'setup-shell))
+;(eval-after-load 'shell '(require 'setup-shell))
 (require 'setup-hippie)
 
 (use-package yasnippet
@@ -841,13 +840,6 @@ Reveal outlines."
 
 ;; (define-key input-decode-map [?\C-\[] (kbd "<C-[>"))
 ;; (define-key input-decode-map [?\C-i] (kbd "<C-i>"))
-
-(when is-mac
-  (setq mac-command-modifier 'meta)
-  (setq mac-right-command-modifier 'super)
-  (setq mac-right-control-modifier 'hyper)
-  ;; (setq mac-option-modifier 'super)
-  (setq mac-option-modifier nil))
 
 (bind-keys
  ("C-<" . scroll-down-command)
