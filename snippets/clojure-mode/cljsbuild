@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: cljsbuild
+# key: cljsbuild
+# --
+:cljsbuild {:builds [{:source-paths ["src" "dev"]
+                      ;; :figwheel true
+                      ;; :id "dev"
+                      :compiler {:output-to "target/classes/public/app.js"
+                      :output-dir "target/classes/public/out"
+                      :optimizations :none
+                      ;; :main "undead.client"
+                      :asset-path "/out"
+                      :recompile-dependents true
+                      :source-map true}}]}

@@ -1,0 +1,25 @@
+# -*- mode: snippet -*-
+# name: defproject
+# key: project
+# --
+(defproject ${1:`(file-name-base (f-parent (buffer-file-name)))`} "0.1.0-SNAPSHOT"
+  :description "$2"
+  :url "$3"
+  :license {:name "The MIT License"
+            :url "https://opensource.org/licenses/MIT"}
+  :jvm-opts ["-XX:MaxPermSize=256m"]
+  :dependencies [[org.clojure/clojure "1.8.0"]
+                 #_[org.clojure/clojurescript ""]
+                 #_[com.stuartsierra/component ""]]
+  :profiles {:dev {:plugins [#_[lein-cljsbuild ""]
+                             #_[lein-figwheel ""]
+                             #_[lein-expectations ""]
+                             #_[lein-autoexpect ""]]
+
+                   ;; https://github.com/bhauman/lein-figwheel/wiki/Using-the-Figwheel-REPL-within-NRepl#integration-with-emacscider
+                   :dependencies [;; to restart components like (reset) ring server
+                                  #_[reloaded.repl ""]
+                                  ;; so cider-jack-in-clojurescript works with figwheel
+                                  #_[com.cemerick/piggieback ""]
+                                  #_[figwheel-sidecar ""]]
+                   :source-paths ["dev"]}})
