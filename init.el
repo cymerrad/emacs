@@ -62,6 +62,7 @@
 (defun init--install-packages ()
   (packages-install
    '(use-package
+      racket-mode
       dash
       highlight-escape-sequences
       whitespace-cleanup-mode
@@ -449,7 +450,7 @@
   :load-path "site-lisp/racket-mode/"
   :mode (("\\.rkt\\'" . racket-mode))
   :config
-  (add-hook 'racket-mode-hook)
+  (add-hook 'racket-mode-hook (lambda () (lispy-mode 1)))
   ;; :config (progn
   ;;           (add-hook 'racket-mode-hook      #'racket-unicode-input-method-enable)
   ;;           (add-hook 'racket-repl-mode-hook #'racket-unicode-input-method-enable))
@@ -523,6 +524,8 @@
  ;("C-a" . prelude-move-beginning-of-line)
  ("C-x k" . kill-this-buffer)
  ("C-'" . quoted-insert))
+
+(setq tab-always-indent 'complete)
 
 (split-window-below)
 (ze-toggle-golden-ratio)
