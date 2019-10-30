@@ -862,8 +862,6 @@ Reveal outlines."
  ("<f9>" . kmacro-end-or-call-macro)
  ("C-'" . quoted-insert))
 
-(bind-keys :map minibuffer-local-map
-           ("C-q" . abort-recursive-edit))
 
 ;; Turn page breaks into lines
 (use-package page-break-lines
