@@ -1,20 +1,18 @@
 (require 'smartparens-config)
 
-(add-to-list 'sp-ignore-modes-list 'js2-mode)
-
 ;; (setq sp-autoskip-closing-pair 'always-end)
 
-;; (smartparens-global-mode 1) 
+(smartparens-global-mode 1) 
 ;; (smartparens-global-mode -1)
 
-;; (--each '(emacs-lisp-mode-hook)
-;;   (add-hook it 'turn-on-smartparens-mode))
+(--each '(emacs-lisp-mode-hook)
+  (add-hook it 'turn-on-smartparens-mode))
 
 ;; highlights matching pairs
 (show-smartparens-global-mode t)
 
 ;; TODO enable strict mode
-;; (smartparens-strict-mode +1)
+(smartparens-strict-mode +1)
 
 ;; TODO
 ;; https://github.com/Fuco1/smartparens/issues/446

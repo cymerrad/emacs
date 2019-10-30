@@ -300,9 +300,28 @@
 (setq whitespace-line-column 80) ;; limit line length
 (setq whitespace-style '(face tabs empty trailing lines-tail))
 
-(require 'setup-smartparens)
+(require 'smartparens)
+;(require 'setup-smartparens)
 (require 'smartparens-config)
 (show-smartparens-global-mode)
+(use-package smartparens
+  :init
+  (bind-key "C-M-f" #'sp-forward-sexp smartparens-mode-map)
+  (bind-key "C-M-b" #'sp-backward-sexp smartparens-mode-map)
+  (bind-key "C-)" #'sp-forward-slurp-sexp smartparens-mode-map)
+  (bind-key "C-(" #'sp-backward-slurp-sexp smartparens-mode-map)
+  (bind-key "M-)" #'sp-forward-barf-sexp smartparens-mode-map)
+  (bind-key "M-(" #'sp-backward-barf-sexp smartparens-mode-map)
+  (bind-key "C-S-s" #'sp-splice-sexp)
+  (bind-key "C-M-<backspace>" #'backward-kill-sexp)
+  (bind-key "C-M-S-<SPC>" (lambda () (interactive) (mark-sexp -1)))
+
+  :config
+  (smartparens-global-mode t)
+
+  (sp-pair "'" nil :actions :rem)
+  (sp-pair "`" nil :actions :rem)
+  (setq sp-highlight-pair-overlay nil))
 
 ;; Emacs server
 (require 'server)
@@ -488,7 +507,7 @@
  ("C->" . scroll-up-command)
  ;("<escape>" . bury-buffer)
  ("C-t" . hippie-expand-no-case-fold)
- ("C-<space>" . completion-at-point)
+ ("C-SPC" . completion-at-point)
  ;("M-t" . completion-at-point)
  ("<f1>" . help-command)
  ("C-w" . kill-region-or-backward-word)
