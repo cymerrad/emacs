@@ -1,2 +1,9 @@
 elpa/
-
+\#*
+.\#*
+.backup
+auto-save-list
+history
+persp-confs
+projectile-bookmarks.eld
+recentf

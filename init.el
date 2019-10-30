@@ -39,13 +39,12 @@
       (package-install it)))
   (delete-other-windows))
 
-(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
-                         ("melpa" . "https://melpa.org/packages/")))
-
 ;; PACKAGES
 ;; PACKAGES, PACKAGES
 ;; PACKAGES, PACKAGES, PACKAGES
 (require 'package)
+(setq package-archives '(("gnu" . "https://elpa.gnu.org/packages/")
+                         ("melpa" . "https://melpa.org/packages/")))
 (package-initialize)
 
 (unless (file-exists-p (concat user-emacs-directory "elpa/archives/melpa"))
@@ -69,8 +68,6 @@
       elisp-slime-nav
       smooth-scrolling
       shell-command
-      js2-refactor
-      js2-mode
       easy-kill
       rainbow-mode
       diminish
@@ -118,8 +115,7 @@
 ;;          SETTINGS         ;;
 ;;                           ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(setq inhibit-startup-message t)
-(setq inhibit-startup-screen t)
+
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
@@ -339,10 +335,9 @@
 (add-to-list 'grep-find-ignored-directories "elpa")
 (add-to-list 'grep-find-ignored-directories "node_modules")
 
-(eval-after-load 'js2-mode '(require 'setup-js2-mode))
-(add-hook 'js-mode-hook (lambda () (custom-set-default 'js-indent-level 2)))
+
 (setq programming-modes
-      '(clojure-mode js2-mode js-mode c-mode c++-mode emacs-lisp-mode racket-mode))
+      '(clojure-mode emacs-lisp-mode racket-mode))
 
 ;; map files to modes
 (require 'mode-mappings)
@@ -383,7 +378,7 @@
             (rainbow-mode +1)))
 
 (require 'whitespace)
-(setq whitespace-line-column 80) ;; limit line length
+(setq whitespace-line-column 120) ;; limit line length
 (setq whitespace-style '(face tabs empty trailing lines-tail))
 
 (require 'smartparens-config)
@@ -794,11 +789,6 @@ Reveal outlines."
   :init
   (global-launch-mode +1))
 
-(use-package reveal-in-osx-finder
-  ;; TODO binding
-  :ensure t
-  :bind (("C-c f" . reveal-in-osx-finder)))
-
 (use-package avy-jump
   :ensure avy
   :init (bind-keys :prefix-map ze-nav-prefix
@@ -853,15 +843,15 @@ Reveal outlines."
  ("<f1>" . help-command)
  ("M-h" . kill-region-or-backward-word)
  ("<C-tab>" . ze-other-window)
- ("<H-tab>" . other-frame)
+ ;; ("<H-tab>" . other-frame)
  ("C-x <C-tab>" . i-meant-other-window)
  ("C-x 3" . split-window-right-and-move-there-dammit)
  ("C-c C-e" . eval-and-replace)
  ("C-c c" . comment-or-uncomment-region-or-line)
  ("C-c d" . prelude-duplicate-current-line-or-region)
- ("H-j" . pop-to-mark-command)
- ("H-u" . universal-argument)
- ("H-S-u" . negative-argument)
+ ;; ("H-j" . pop-to-mark-command)
+ ;; ("H-u" . universal-argument)
+ ;; ("H-S-u" . negative-argument)
  ("C-c M-d" . prelude-duplicate-and-comment-current-line-or-region)
  ("C-c j" . start-or-switch-to-shell)
  ("C-c s" . create-scratch-buffer)
@@ -874,13 +864,6 @@ Reveal outlines."
 
 (bind-keys :map minibuffer-local-map
            ("C-q" . abort-recursive-edit))
-
-;; Translate backward-delete onto C-h
-(define-key key-translation-map [?\C-h] [?\C-?])
-;; Translate keyboard-quit
-(define-key key-translation-map [?\M-g] [?\C-g])
-;; Translate kill-region
-(define-key key-translation-map [?\M-w] [?\C-w])
 
 ;; Turn page breaks into lines
 (use-package page-break-lines
@@ -897,5 +880,6 @@ Reveal outlines."
         zop-to-char-next-keys '(?\C-n nil)
         zop-to-char-prec-keys '(?\C-p nil)))
 
-(split-window-right)
+(split-window-below)
 (ze-toggle-golden-ratio)
+
