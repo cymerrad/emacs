@@ -75,11 +75,6 @@
       eval-sexp-fu)))
 
 (init--install-packages)
-;(condition-case nil
-;    (init--install-packages)
-;  (error
-;   (package-refresh-contents)
-;   (init--install-packages)))
 
 (eval-when-compile
   (require 'use-package))
@@ -273,69 +268,6 @@
 
   :diminish projectile-mode)
 
-(use-package persp-mode
-  :ensure t
-  :bind (("<f4>" . persp-key-map)
-         :map persp-key-map
-         ("<f4>" . persp-key-map)
-         ;; TODO port persp-switch-last to persp-mode from perspective
-         ;; ("SPC" . persp-switch-last)
-         )
-  :init (persp-mode t)
-  :config
-  ;; Leave C-c p to projectile, use <f4> instead
-  (set-default 'persp-keymap-prefix (kbd "<f4>"))
-  (substitute-key-definition 'persp-key-map nil persp-mode-map)
-
-  (add-hook 'persp-switch-hook
-            (lambda ()
-              (when (= (length (window-list)) 1)
-                (with-selected-window (split-window-right)))))
-
-  ;; stolen from Spacemacs
-  (defun ivy-persp-switch-project (arg)
-    (interactive "P")
-    (ivy-read "Switch to Project Perspective: "
-              (if (projectile-project-p)
-                  (cons (abbreviate-file-name (projectile-project-root))
-                        (projectile-relevant-known-projects))
-                projectile-known-projects)
-              :action (lambda (project)
-                        (let ((persp-reset-windows-on-nil-window-conf t))
-                          (persp-switch project)
-                          (let ((projectile-completion-system 'ivy))
-                            (projectile-switch-project-by-name project))))))
-
-  (bind-keys :map persp-key-map
-             ("S" . ivy-persp-switch-project))
-
-  (with-eval-after-load "ivy"
-    (add-hook 'ivy-ignore-buffers
-              #'(lambda (b)
-                  (when persp-mode
-                    (let ((persp (get-current-persp)))
-                      (if persp
-                          (not (persp-contain-buffer-p b persp))
-                        nil)))))
-
-    (setq ivy-sort-functions-alist
-          (append ivy-sort-functions-alist
-                  '((persp-kill-buffer . nil)
-                    (persp-remove-buffer . nil)
-                    (persp-add-buffer . nil)
-                    (persp-switch . nil)
-                    (persp-window-switch . nil)
-                    (persp-frame-switch . nil)))))
-  ;; TODO ibuffer setup with persp
-  ;; https://gist.github.com/Bad-ptr/1aca1ec54c3bdb2ee80996eb2b68ad2d#file-persp-mode-ibuffer-groups-el
-  )
-
-;; TODO: set these `grep-find-ignored-files' `grep-find-ignored-directories'
-;; `projectile-globally-ignored-files' `projectile-globally-ignored-directories'
-(add-to-list 'grep-find-ignored-directories "elpa")
-(add-to-list 'grep-find-ignored-directories "node_modules")
-
-
 (setq programming-modes
       '(clojure-mode emacs-lisp-mode racket-mode))
 
@@ -382,8 +314,6 @@
 (setq whitespace-style '(face tabs empty trailing lines-tail))
 
 (require 'smartparens-config)
-(add-hook 'js-mode-hook 'turn-on-smartparens-mode)
-(add-hook 'js-mode-hook 'show-smartparens-mode)
 (show-smartparens-global-mode)
 
 ;; Emacs server
@@ -561,6 +491,27 @@
   (setq zop-to-char-copy-keys '(?\M-c nil)
         zop-to-char-next-keys '(?\C-n nil)
         zop-to-char-prec-keys '(?\C-p nil)))
+
+(bind-keys
+ ("C-<" . scroll-down-co)
+ ("C->" . scroll-up-command)
+ ("<escape>" . bury-buffer)
+ ("C-t" . hippie-expand-no-case-fold)
+ ("M-t" . completion-at-point)
+ ("<f1>" . help-command)
+ ("M-h" . kill-region-or-backward-word)
+ ("<C-tab>" . ze-other-window)
+ ("C-x <C-tab>" . i-meant-other-window)
+ ("C-c C-e" . eval-and-replace)
+ ("C-c c" . comment-or-uncomment-region-or-line)
+ ("C-c d" . prelude-duplicate-current-line-or-region)
+ ("C-c M-d" . prelude-duplicate-and-comment-current-line-or-region)
+ ;("C-c j" . start-or-switch-to-shell)
+ ;("C-c s" . create-scratch-buffer)
+ ;("M-c" . easy-kill)
+ ;("C-a" . prelude-move-beginning-of-line)
+ ("C-x k" . kill-this-buffer)
+ ("C-'" . quoted-insert))
 
 (split-window-below)
 (ze-toggle-golden-ratio)
