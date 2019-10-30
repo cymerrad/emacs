@@ -500,6 +500,7 @@
  ("M-t" . completion-at-point)
  ("<f1>" . help-command)
  ("M-h" . kill-region-or-backward-word)
+ ("C-w" . kill-region-or-backward-word)
  ("<C-tab>" . ze-other-window)
  ("C-x <C-tab>" . i-meant-other-window)
  ("C-c C-e" . eval-and-replace)
