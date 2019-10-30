@@ -14,9 +14,6 @@
 ;; Move files to trash when deleting
 (setq delete-by-moving-to-trash t)
 
-;; Real emacs knights don't use shift to mark things
-(setq shift-select-mode nil)
-
 ;; Transparently open compressed files
 (auto-compression-mode t)
 

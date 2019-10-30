@@ -30,7 +30,7 @@
 ;; Keep emacs Custom-settings in separate file
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (when (file-exists-p custom-file)
-  (load custom-file))
+  (load custom-file))         
 
 (defun packages-install (packages)
   (require 'dash)
@@ -121,19 +121,6 @@
       auto-save-file-name-transforms `((".*" ,temporary-file-directory t))
       ;; Make backups of files, even when they're in version control
       vc-make-backup-files t)
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (racket-mode))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
 
 ;; Save point position between sessions
 (use-package saveplace
@@ -310,9 +297,10 @@
             (rainbow-mode +1)))
 
 (require 'whitespace)
-(setq whitespace-line-column 120) ;; limit line length
+(setq whitespace-line-column 80) ;; limit line length
 (setq whitespace-style '(face tabs empty trailing lines-tail))
 
+(require 'setup-smartparens)
 (require 'smartparens-config)
 (show-smartparens-global-mode)
 
@@ -436,12 +424,13 @@
 ;; clojure
 (require 'setup-clj)
 
+;; racket
 (use-package racket-mode
   ;; :ensure t
   :load-path "site-lisp/racket-mode/"
   :mode (("\\.rkt\\'" . racket-mode))
   :config
-  (add-hook 'racket-mode-hook (lambda () (lispy-mode 1)))
+  (add-hook 'racket-mode-hook)
   ;; :config (progn
   ;;           (add-hook 'racket-mode-hook      #'racket-unicode-input-method-enable)
   ;;           (add-hook 'racket-repl-mode-hook #'racket-unicode-input-method-enable))
@@ -493,13 +482,15 @@
         zop-to-char-prec-keys '(?\C-p nil)))
 
 (bind-keys
+ ; WHO DO THE FUCK THINKS THIS IS A GOOD IDEA
+ ("C-z" . nil)
  ("C-<" . scroll-down-co)
  ("C->" . scroll-up-command)
- ("<escape>" . bury-buffer)
+ ;("<escape>" . bury-buffer)
  ("C-t" . hippie-expand-no-case-fold)
- ("M-t" . completion-at-point)
+ ("C-<space>" . completion-at-point)
+ ;("M-t" . completion-at-point)
  ("<f1>" . help-command)
- ("M-h" . kill-region-or-backward-word)
  ("C-w" . kill-region-or-backward-word)
  ("<C-tab>" . ze-other-window)
  ("C-x <C-tab>" . i-meant-other-window)
