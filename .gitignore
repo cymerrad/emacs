@@ -8,3 +8,4 @@ persp-confs
 projectile-bookmarks.eld
 recentf
 .cache
+company-statistics-cache.el
