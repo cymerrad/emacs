@@ -370,6 +370,29 @@ mouse-3: go to end"))))
   :config (setq savehist-save-minibuffer-history t
                 savehist-autosave-interval 180))
 
+(bind-keys
+ ("C-z" . nil) ;; WHO THE FUCK THINKS STOPPING APPLICATION WITH THIS SHORTCUT IS A GOOD IDEA
+; ("C-<" . scroll-down-co)
+; ("C->" . scroll-up-command)
+ ;("<escape>" . bury-buffer)
+; ("C-t" . hippie-expand-no-case-fold)
+; ("C-SPC" . completion-at-point)
+ ;("M-t" . completion-at-point)
+; ("<f1>" . help-command)
+; ("C-w" . kill-region-or-backward-word)
+ ("C-w" . backward-kill-word)
+; ("<C-tab>" . ze-other-window)
+; ("C-x <C-tab>" . i-meant-other-window)
+; ("C-c C-e" . eval-and-replace)
+ ("C-/" . comment-or-uncomment-region-or-line)
+; ("C-c d" . prelude-duplicate-current-line-or-region)
+; ("C-c M-d" . prelude-duplicate-and-comment-current-line-or-region)
+ ;("C-c j" . start-or-switch-to-shell)
+ ;("C-c s" . create-scratch-buffer)
+ ;("M-c" . easy-kill)
+ ;("C-a" . prelude-move-beginning-of-line)
+ ("C-x k" . kill-this-buffer))
+
 (use-package helm                       ; Powerful minibuffer input framework
   :ensure t
   :bind (("A-C-o"   . helm-resume)
@@ -1233,7 +1256,6 @@ mouse-3: go to end"))))
 
 
 ;;; OTHER?
-
 (use-package paredit
   :ensure t
   :defer t
@@ -1245,9 +1267,12 @@ mouse-3: go to end"))))
     (add-hook 'ielm-mode-hook #'paredit-mode)
     (add-hook 'clojure-mode-hook #'paredit-mode))
   :config (define-key paredit-mode-map (kbd "C-j") #'join-line))
-
+ 
 (use-package paren
   :config (show-paren-mode))
+
+;; No, thank you, I don't need the Git integration
+(setq vc-handled-backends nil)
 
 
 
@@ -1658,31 +1683,8 @@ mouse-3: go to end"))))
 ;;              ("C-c C-e" . racket-send-last-sexp)))
 
 
-;; No, thank you, I don't need the Git integration
-(setq vc-handled-backends nil)
 
 
-(bind-keys
- ; WHO DO THE FUCK THINKS THIS IS A GOOD IDEA
- ("C-z" . nil)
- ("C-<" . scroll-down-co)
- ("C->" . scroll-up-command)
- ;("<escape>" . bury-buffer)
- ("C-t" . hippie-expand-no-case-fold)
- ("C-SPC" . completion-at-point)
- ;("M-t" . completion-at-point)
- ("<f1>" . help-command)
- ("C-w" . kill-region-or-backward-word)
- ("<C-tab>" . ze-other-window)
- ("C-x <C-tab>" . i-meant-other-window)
- ("C-c C-e" . eval-and-replace)
- ("C-c c" . comment-or-uncomment-region-or-line)
- ("C-c d" . prelude-duplicate-current-line-or-region)
- ("C-c M-d" . prelude-duplicate-and-comment-current-line-or-region)
- ;("C-c j" . start-or-switch-to-shell)
- ;("C-c s" . create-scratch-buffer)
- ;("M-c" . easy-kill)
- ;("C-a" . prelude-move-beginning-of-line)
- ("C-x k" . kill-this-buffer)
- ("C-'" . quoted-insert))
+
+
 
