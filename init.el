@@ -76,19 +76,19 @@
 
 
 ;;; Customization
-(defconst lunaryorn-custom-file (locate-user-emacs-file "custom.el")
+(defconst custom-file (locate-user-emacs-file "custom.el")
   "File used to store settings from Customization UI.")
 
 (use-package cus-edit
   :defer t
   :config
-  (setq custom-file lunaryorn-custom-file
+  (setq custom-file custom-file
         custom-buffer-done-kill nil            ; Kill when existing
         custom-buffer-verbose-help nil         ; Remove redundant help text
         ;; Show me the real variable name
         custom-unlispify-tag-names nil
         custom-unlispify-menu-entries nil)
-  :init (load lunaryorn-custom-file 'no-error 'no-message))
+  :init (load custom-file 'no-error 'no-message))
 
 
 
@@ -117,7 +117,6 @@
 (fset 'display-startup-echo-area-message #'ignore)
 
 (use-package solarized                  ; My colour theme
-  :disabled t
   :ensure solarized-theme
   :config
   ;; Disable variable pitch fonts in Solarized theme
@@ -201,7 +200,6 @@
           ;; Prettify hydra entry points
           ("/body\\'"       . "|=")
           ;; Drop/shorten package prefixes
-          ("\\`lunaryorn-"  . "")
           ("projectile-"    . "proj-")
           ("helm-"          . "h-")
           ("magit-"         . "ma-")))
@@ -353,33 +351,6 @@
 mouse-2: toggle rest visibility\n\
 mouse-3: go to end"))))
 
-(use-package spaceline-config           ; A beautiful mode line
-  :ensure spaceline
-  :config
-  (spaceline-helm-mode)                 ; Enable a special Helm mode line
-
-  (spaceline-compile
-   'lunaryorn
-   ;; Left side of the mode line (all the important stuff)
-   '(((buffer-modified buffer-size input-method) :face highlight-face)
-     anzu
-     '(buffer-id remote-host buffer-encoding-abbrev)
-     ((point-position line-column buffer-position selection-info)
-      :separator " | ")
-     major-mode
-     process
-     (flycheck-error flycheck-warning flycheck-info)
-     (python-pyvenv :fallback python-pyenv)
-     ((which-function projectile-root) :separator " @ ")
-     ((minor-modes :separator spaceline-minor-modes-separator) :when active)
-     nyan-cat)
-   ;; Right segment (the unimportant stuff)
-   '((version-control :when active)
-     battery))
-
-  ;; FIXME: create a new issue at https://github.com/lunaryorn/.emacs.d/
-  ;; (setq-default mode-line-format '("%e" (:eval (spaceline-ml-lunaryorn))))
-  )
 
 (use-package powerline                  ; The work-horse of Spaceline
   :ensure t
@@ -460,8 +431,7 @@ mouse-3: go to end"))))
    ;; helm-buffers-fuzzy-matching t
    ;; helm-man-or-woman-function 'woman
    ;; helm-quick-update t
-
-)
+   )
 
   :diminish helm-mode)
 
@@ -519,7 +489,7 @@ mouse-3: go to end"))))
 (use-package golden-ratio               ; Automatically resize windows
   :ensure t
   :init
-  (defun lunaryorn-toggle-golden-ratio ()
+  (defun toggle-golden-ratio ()
     (interactive)
     (if (bound-and-true-p golden-ratio-mode)
         (progn
@@ -527,7 +497,7 @@ mouse-3: go to end"))))
           (balance-windows))
       (golden-ratio-mode)
       (golden-ratio)))
-  :bind (("C-c t g" . lunaryorn-toggle-golden-ratio))
+  :bind (("C-c t g" . toggle-golden-ratio))
   :config
   (setq golden-ratio-extra-commands '(windmove-up
                                       windmove-down
@@ -576,6 +546,7 @@ mouse-3: go to end"))))
   :config (windmove-default-keybindings 'shift))
 
 (use-package desktop                    ; Save buffers, windows and frames
+  :disabled t
   :init (desktop-save-mode)
   :config
   ;; Save desktops a minute after Emacs was idle.
@@ -704,7 +675,7 @@ mouse-3: go to end"))))
   :ensure t
   :bind (("C-c s r" . vr/query-replace)
          ("C-c s R" . vr/replace))
-
+)
 
 
 ;;; Basic editing
@@ -738,7 +709,7 @@ mouse-3: go to end"))))
   :diminish (whitespace-cleanup-mode . " Ⓦ"))
 
 (use-package zop-to-char                ; Better zapping
-  :disable t
+  :disabled t
   :ensure t
   :bind (("M-z" . zop-to-char)
          ("M-Z" . zop-up-to-char)))
@@ -826,12 +797,7 @@ mouse-3: go to end"))))
             try-expand-list
             try-complete-lisp-symbol-partially
             try-complete-lisp-symbol
-            lunaryorn-try-complete-lisp-symbol-without-namespace))))
-
-(use-package lunaryorn-hippie-exp       ; Custom expansion functions
-  :load-path "lisp/"
-  :after hippie-exp
-  :commands (lunaryorn-try-complete-lisp-symbol-without-namespace))
+            try-complete-lisp-symbol-without-namespace))))
 
 (use-package yasnippet                  ; Snippets
   :ensure t
@@ -910,11 +876,6 @@ mouse-3: go to end"))))
     (add-hook 'json-mode-hook
               ;; Fix JSON mode indentation
               (lambda () (setq-local js-indent-level 4)))))
-
-(use-package lunaryorn-json             ; Personal JSON tools
-  :load-path "lisp/"
-  :bind (:map json-mode-map
-              ("C-c m r" . lunaryorn-json-chef-role)))
 
 (use-package json-reformat              ; Reformat JSON
   :ensure t
@@ -1049,13 +1010,6 @@ mouse-3: go to end"))))
               ("C-c m e e" . eval-last-sexp)
               ("C-c m e f" . eval-defun)))
 
-(use-package lunaryorn-elisp            ; Personal tools for Emacs Lisp
-  :load-path "lisp/"
-  :commands (lunaryorn-add-use-package-to-imenu)
-  :bind (:map emacs-lisp-mode-map ("C-c m f" . lunaryorn-elisp-find-cask-file))
-  :init
-  (add-hook 'emacs-lisp-mode-hook #'lunaryorn-add-use-package-to-imenu))
-
 (use-package helm-elisp                 ; Helm commands for elisp
   :ensure helm
   :defer t
@@ -1063,86 +1017,86 @@ mouse-3: go to end"))))
          ("C-c f l" . helm-locate-library)))
 
 
-;;; Scala
+;; ;;; Scala
 
-(use-package scala-mode                 ; Scala editing
-  :ensure t
-  :defer t
-  :config
-  (setq scala-indent:default-run-on-strategy
-        scala-indent:operator-strategy)
+;; (use-package scala-mode                 ; Scala editing
+;;   :ensure t
+;;   :defer t
+;;   :config
+;;   (setq scala-indent:default-run-on-strategy
+;;         scala-indent:operator-strategy)
 
-  (defun lunaryorn-newline-and-indent-with-asterisk ()
-    (interactive)
-    (newline-and-indent)
-    (scala-indent:insert-asterisk-on-multiline-comment))
+;;   (defun newline-and-indent-with-asterisk ()
+;;     (interactive)
+;;     (newline-and-indent)
+;;     (scala-indent:insert-asterisk-on-multiline-comment))
 
-  (define-key scala-mode-map (kbd "RET")
-    #'lunaryorn-newline-and-indent-with-asterisk))
+;;   (define-key scala-mode-map (kbd "RET")
+;;     #'newline-and-indent-with-asterisk))
 
-(use-package sbt-mode                   ; Scala build tool
-  :ensure t
-  :defer t
-  :bind (:map scala-mode-map
-              ("C-c m b c" . sbt-command)
-              ("C-c m b r" . sbt-run-previous-command))
-  :config
-  ;; Do not pop up SBT buffers automatically
-  (setq sbt:display-command-buffer nil)
+;; (use-package sbt-mode                   ; Scala build tool
+;;   :ensure t
+;;   :defer t
+;;   :bind (:map scala-mode-map
+;;               ("C-c m b c" . sbt-command)
+;;               ("C-c m b r" . sbt-run-previous-command))
+;;   :config
+;;   ;; Do not pop up SBT buffers automatically
+;;   (setq sbt:display-command-buffer nil)
 
-  (defun lunaryorn-scala-pop-to-sbt (new-frame)
-    "Open SBT REPL for this project, optionally in a NEW-FRAME.
-Select the SBT REPL for the current project in a new window.  If
-the REPL is not yet running, start it.  With prefix arg, select
-the REPL in a new frame instead."
-    (interactive "P")
-    ;; Start SBT when no running, taken from `sbt:command'
-    (when (not (comint-check-proc (sbt:buffer-name)))
-      (sbt:run-sbt))
+;;   (defun scala-pop-to-sbt (new-frame)
+;;     "Open SBT REPL for this project, optionally in a NEW-FRAME.
+;; Select the SBT REPL for the current project in a new window.  If
+;; the REPL is not yet running, start it.  With prefix arg, select
+;; the REPL in a new frame instead."
+;;     (interactive "P")
+;;     ;; Start SBT when no running, taken from `sbt:command'
+;;     (when (not (comint-check-proc (sbt:buffer-name)))
+;;       (sbt:run-sbt))
 
-    (let ((display-buffer-overriding-action
-           (if new-frame '(display-buffer-pop-up-frame) nil)))
-      (pop-to-buffer (sbt:buffer-name))))
+;;     (let ((display-buffer-overriding-action
+;;            (if new-frame '(display-buffer-pop-up-frame) nil)))
+;;       (pop-to-buffer (sbt:buffer-name))))
 
-  (with-eval-after-load 'scala-mode
-    (bind-key "C-c m s" #'lunaryorn-scala-pop-to-sbt scala-mode-map))
+;;   (with-eval-after-load 'scala-mode
+;;     (bind-key "C-c m s" #'scala-pop-to-sbt scala-mode-map))
 
-  ;; Disable Smartparens Mode in SBT buffers, because it frequently
-  ;; hangs while trying to find matching delimiters
-  (add-hook 'sbt-mode-hook
-            (lambda ()
-              (when (fboundp 'smartparens-mode)
-                (smartparens-mode -1)))))
+;;   ;; Disable Smartparens Mode in SBT buffers, because it frequently
+;;   ;; hangs while trying to find matching delimiters
+;;   (add-hook 'sbt-mode-hook
+;;             (lambda ()
+;;               (when (fboundp 'smartparens-mode)
+;;                 (smartparens-mode -1)))))
 
-(use-package ensime                     ; Scala interaction mode
-  :ensure t
-  :after scala-mode
-  :bind (:map ensime-mode-map
-              ("C-c m E" . ensime-reload)
-              ;; Free M-n and M-p again
-              ("M-n" . nil)
-              ("M-p" . nil)
-              ("<f5>" . ensime-sbt-do-compile)
-         :map scala-mode-map ("C-c m e" . ensime))
-  :config
-  ;; ;; Enable Ensime for all Scala buffers.
-  (add-hook 'scala-mode-hook #'ensime-mode)
+;; (use-package ensime                     ; Scala interaction mode
+;;   :ensure t
+;;   :after scala-mode
+;;   :bind (:map ensime-mode-map
+;;               ("C-c m E" . ensime-reload)
+;;               ;; Free M-n and M-p again
+;;               ("M-n" . nil)
+;;               ("M-p" . nil)
+;;               ("<f5>" . ensime-sbt-do-compile)
+;;          :map scala-mode-map ("C-c m e" . ensime))
+;;   :config
+;;   ;; ;; Enable Ensime for all Scala buffers.
+;;   (add-hook 'scala-mode-hook #'ensime-mode)
 
-  ;; Compile on save.  My projects are small enough :)
-  (setq ensime-sbt-perform-on-save "test:compile"))
+;;   ;; Compile on save.  My projects are small enough :)
+;;   (setq ensime-sbt-perform-on-save "test:compile"))
 
-(use-package ensime-expand-region       ; Integrate Ensime into expand-region
-  :ensure ensime
-  :after ensime)
+;; (use-package ensime-expand-region       ; Integrate Ensime into expand-region
+;;   :ensure ensime
+;;   :after ensime)
 
-(use-package play-routes-mode           ; Mode for Play 2 routes files
-  :ensure t
-  :defer t)
+;; (use-package play-routes-mode           ; Mode for Play 2 routes files
+;;   :ensure t
+;;   :defer t)
 
-(use-package flycheck-ensime            ; Ensime-based checker for Flycheck
-  :disabled t
-  :load-path "lisp/"
-  :defer t)
+;; (use-package flycheck-ensime            ; Ensime-based checker for Flycheck
+;;   :disabled t
+;;   :load-path "lisp/"
+;;   :defer t)
 
 
 ;;; Haskell
@@ -1225,7 +1179,7 @@ the REPL in a new frame instead."
   (setq projectile-completion-system 'helm
         projectile-find-dir-includes-top-level t)
 
-  (defun lunaryorn-neotree-project-root (&optional directory)
+  (defun neotree-project-root (&optional directory)
     "Open a NeoTree browser for a project DIRECTORY."
     (interactive)
     (let ((default-directory (or directory default-directory)))
@@ -1264,14 +1218,14 @@ the REPL in a new frame instead."
   :bind (([remap projectile-find-file] . helm-projectile-find-file)
          ("C-c s p" . helm-projectile-ag)
          :map helm-projectile-projects-map
-              ("C-t" . lunaryorn-neotree-project-root))
+              ("C-t" . neotree-project-root))
   :config
   (helm-projectile-on)
 
   (setq projectile-switch-project-action #'helm-projectile)
 
   (helm-add-action-to-source "Open NeoTree `C-t'"
-                             #'lunaryorn-neotree-project-root
+                             #'neotree-project-root
                              helm-source-projectile-projects 1))
 
 
@@ -1293,7 +1247,7 @@ the REPL in a new frame instead."
   :config (define-key paredit-mode-map (kbd "C-j") #'join-line))
 
 (use-package paren
-  :config (show-paren-mode))2d
+  :config (show-paren-mode))
 
 
 
@@ -1702,6 +1656,10 @@ the REPL in a new frame instead."
 ;;              ;; ("C-c m" . racket-macro-expand-map)
 ;;              ("C-c C-c" . racket-send-definition)
 ;;              ("C-c C-e" . racket-send-last-sexp)))
+
+
+;; No, thank you, I don't need the Git integration
+(setq vc-handled-backends nil)
 
 
 (bind-keys
