@@ -54,8 +54,6 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-
-
 ;;; Requires
 (eval-when-compile
   (require 'use-package)
@@ -741,8 +739,25 @@ mouse-3: go to end"))))
 ;;   (sp-pair "`" nil :actions :rem)
 ;;   (setq sp-highlight-pair-overlay nil))
 
+(use-package paredit
+  :ensure t
+  :defer t
+  :init
+  (progn
+    (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
+    (add-hook 'lisp-mode-hook #'paredit-mode)
+    (add-hook 'scheme-mode-hook #'paredit-mode)
+    (add-hook 'ielm-mode-hook #'paredit-mode)
+    (add-hook 'clojure-mode-hook #'paredit-mode))
+  :config (define-key paredit-mode-map (kbd "C-j") #'join-line))
+
+(use-package paren
+  :disabled t
+  :config (show-paren-mode))
+
 ; paired delimiters
 (use-package smartparens
+  :ensure t
   :diminish smartparens-mode
   :init
   (progn
@@ -1100,7 +1115,99 @@ mouse-3: go to end"))))
 ;;   :load-path "lisp/"
 ;;   :defer t)
 
-
+
+
+;;; Racket
+
+;; (use-package golden-ratio
+;;   :ensure t
+;;   :init
+;;   (defun ze-toggle-golden-ratio ()
+;;     (interactive)
+;;     (if (bound-and-true-p golden-ratio-mode)
+;;         (progn
+;;           (golden-ratio-mode -1)
+;;           (balance-windows))
+;;       (golden-ratio-mode)
+;;       (golden-ratio)))
+;;   :diminish golden-ratio-mode
+;;   :config
+;;   (progn
+;;     (setq golden-ratio-exclude-modes '("bs-mode"
+;;                                        "calc-mode"
+;;                                        "ediff-mode"
+;;                                        "gud-mode"
+;;                                        "gdb-locals-mode"
+;;                                        "gdb-registers-mode"
+;;                                        "gdb-breakpoints-mode"
+;;                                        "gdb-threads-mode"
+;;                                        "gdb-frames-mode"
+;;                                        "gdb-inferior-io-mode"
+;;                                        "gud-mode"
+;;                                        "gdb-inferior-io-mode"
+;;                                        "gdb-disassembly-mode"
+;;                                        "gdb-memory-mode"
+;;                                        "restclient-mode"
+;;                                        "speedbar-mode"
+;;                                        ))
+
+;;     (add-to-list 'golden-ratio-exclude-buffer-regexp "^\\*[hH]elm.*")
+
+;;     (setq golden-ratio-extra-commands
+;;           (append golden-ratio-extra-commands
+;;                   '(ace-window
+;;                     ace-delete-window
+;;                     ace-select-window
+;;                     ace-swap-window
+;;                     ace-maximize-window
+;;                     avy-pop-mark
+;;                     windmove-left
+;;                     windmove-right
+;;                     windmove-up
+;;                     windmove-down
+;;                     select-window-0
+;;                     select-window-1
+;;                     select-window-2
+;;                     select-window-3
+;;                     select-window-4
+;;                     select-window-5
+;;                     select-window-6
+;;                     select-window-7
+;;                     select-window-8
+;;                     select-window-9
+;;                     buf-move-left
+;;                     buf-move-right
+;;                     buf-move-up
+;;                     buf-move-down
+;;                     ess-eval-buffer-and-go
+;;                     ess-eval-function-and-go
+;;                     ess-eval-line-and-go
+;;                     other-window
+;;                     ze-other-window
+;;                     quit-window)))))
+
+;; ;; clojure
+;; (require 'setup-clj)
+
+;; ;; racket
+;; (use-package racket-mode
+;;   ;; :ensure t
+;;   :load-path "site-lisp/racket-mode/"
+;;   :mode (("\\.rkt\\'" . racket-mode))
+;;   :config
+;;   (add-hook 'racket-mode-hook (lambda () (lispy-mode 1)))
+;;   ;; :config (progn
+;;   ;;           (add-hook 'racket-mode-hook      #'racket-unicode-input-method-enable)
+;;   ;;           (add-hook 'racket-repl-mode-hook #'racket-unicode-input-method-enable))
+
+;;   ;; (lookup-key racket-mode-map (kbd "C-c C-e"))
+;;   (bind-keys :map racket-mode-map
+;;              ;; ("C-c m" . racket-macro-expand-map)
+;;              ("C-c C-c" . racket-send-definition)
+;;              ("C-c C-e" . racket-send-last-sexp)))
+
+
+
 ;;; Haskell
 (use-package haskell-mode               ; Haskell major mode
   :ensure t
@@ -1228,39 +1335,18 @@ mouse-3: go to end"))))
 
   (helm-add-action-to-source "Open NeoTree `C-t'"
                              #'neotree-project-root
-                             helm-source-projectile-projects 1))
-
+                             helm-source-projectile-projects 1)))
 
 
 
 
 ;;; OTHER?
-(use-package paredit
-  :ensure t
-  :defer t
-  :init
-  (progn
-    (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
-    (add-hook 'lisp-mode-hook #'paredit-mode)
-    (add-hook 'scheme-mode-hook #'paredit-mode)
-    (add-hook 'ielm-mode-hook #'paredit-mode)
-    (add-hook 'clojure-mode-hook #'paredit-mode))
-  :config (define-key paredit-mode-map (kbd "C-j") #'join-line))
-
-(use-package paren
-  :disabled t
-  :config (show-paren-mode))
-
 ;; No, thank you, I don't need the Git integration
 (setq vc-handled-backends nil)
 
 ;; WHY ARE MOST OF EMACS SHORTCUTS ABSOLUTELY USELESS
 (bind-keys
- ("C-z" . nil) ;; WHO THE FUCK THINKS STOPPING APPLICATION WITH THIS SHORTCUT IS A GOOD IDEA
- ("M-h" . left-char)
- ("M-l" . right-char)
- ("M-j" . next-line)
- ("M-k" . previous-line)
+ ("C-z" . nil) ;; WHO THE FUCK THINKS STOPPING APPLICATION WITH THIS SHORTCUT IS A GOOD 
 ; ("C-<" . scroll-down-co)
 ; ("C->" . scroll-up-command)
  ;("<escape>" . bury-buffer)
@@ -1273,7 +1359,11 @@ mouse-3: go to end"))))
 ; ("<C-tab>" . ze-other-window)
 ; ("C-x <C-tab>" . i-meant-other-window)
 ; ("C-c C-e" . eval-and-replace)
- ("C-/" . comment-or-uncomment-region-or-line)
+; ("C-/" . comment-or-uncomment-region-or-line)
+ ("C-/" . (lambda ()
+	    "comment or uncomment current line"
+	    (interactive)
+	    ((comment-or-uncomment-region (line-beginning-position) (line-end-position)))))
 ; ("C-c d" . prelude-duplicate-current-line-or-region)
 ; ("C-c M-d" . prelude-duplicate-and-comment-current-line-or-region)
  ;("C-c j" . start-or-switch-to-shell)
@@ -1281,7 +1371,6 @@ mouse-3: go to end"))))
  ;("M-c" . easy-kill)
  ;("C-a" . prelude-move-beginning-of-line)
  ("C-x k" . kill-this-buffer))
-
 
 
 ;; ;; Install extensions if they're missing
