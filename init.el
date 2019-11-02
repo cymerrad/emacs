@@ -1335,7 +1335,7 @@ mouse-3: go to end"))))
 
   (helm-add-action-to-source "Open NeoTree `C-t'"
                              #'neotree-project-root
-                             helm-source-projectile-projects 1)))
+                             helm-source-projectile-projects 1))
 
 
 
