@@ -1344,9 +1344,14 @@ mouse-3: go to end"))))
 ;; No, thank you, I don't need the Git integration
 (setq vc-handled-backends nil)
 
+(defun toggle-comment-on-line ()
+  "comment or uncomment current line"
+  (interactive)
+  (comment-or-uncomment-region (line-beginning-position) (line-end-position)))
+
 ;; WHY ARE MOST OF EMACS SHORTCUTS ABSOLUTELY USELESS
 (bind-keys
- ("C-z" . nil) ;; WHO THE FUCK THINKS STOPPING APPLICATION WITH THIS SHORTCUT IS A GOOD 
+ ("C-z" . nil) ;; WHO THE FUCK THINKS STOPPING APPLICATION WITH THIS SHORTCUT IS A GOOD IDEA
 ; ("C-<" . scroll-down-co)
 ; ("C->" . scroll-up-command)
  ;("<escape>" . bury-buffer)
@@ -1360,10 +1365,7 @@ mouse-3: go to end"))))
 ; ("C-x <C-tab>" . i-meant-other-window)
 ; ("C-c C-e" . eval-and-replace)
 ; ("C-/" . comment-or-uncomment-region-or-line)
- ("C-/" . (lambda ()
-	    "comment or uncomment current line"
-	    (interactive)
-	    ((comment-or-uncomment-region (line-beginning-position) (line-end-position)))))
+ ("C-/" . toggle-comment-on-line)
 ; ("C-c d" . prelude-duplicate-current-line-or-region)
 ; ("C-c M-d" . prelude-duplicate-and-comment-current-line-or-region)
  ;("C-c j" . start-or-switch-to-shell)
