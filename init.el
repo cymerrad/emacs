@@ -313,16 +313,9 @@
 (use-package bug-hunter                 ; Search init file for bugs
   :ensure t)
 
-
-
   ;;; The mode line
 (line-number-mode)
 (column-number-mode)
-
-(use-package fancy-battery              ; Fancy battery info for mode line
-  :ensure t
-  :defer t
-  :init (fancy-battery-mode))
 
 (use-package anzu                       ; Position/matches count for isearch
   :ensure t
@@ -478,6 +471,7 @@ mouse-3: go to end"))))
           (mark " " (name 16 -1) " " filename))))
 
 (use-package ibuffer-vc                 ; Group buffers by VC project and status
+  :disabled t
   :ensure t
   :defer t
   :init (add-hook 'ibuffer-hook
@@ -523,22 +517,8 @@ mouse-3: go to end"))))
           ,(rx bos "*NeoTree*" eos)))
   :diminish (golden-ratio-mode . "ⓖ"))
 
-(use-package ibuffer-projectile         ; Group buffers by Projectile project
-  :ensure t
-  :disabled t
-  :defer t
-  ;; :commands (ibuffer-projectile-filter)
-  ;; :init
-  ;; (progn
-  ;;   (defun ibuffer-projectile-filter (&optional arg)
-  ;;     (ibuffer-projectile-set-filter-groups)
-  ;;     (unless (eq ibuffer-sorting-mode 'alphabetic)
-  ;;       (ibuffer-do-sort-by-alphabetic)))
-
-  ;;   (add-hook 'ibuffer-hook 'ibuffer-projectile-filter))
-  :init (add-hook 'ibuffer-hook #'ibuffer-projectile-set-filter-groups))
-
 (use-package windmove                   ; Move between windows with Shift+Arrow
+  :disabled t
   :bind (("C-c w <left>"  . windmove-left)
          ("C-c w <right>" . windmove-right)
          ("C-c w <up>"    . windmove-up)
@@ -567,63 +547,6 @@ mouse-3: go to end"))))
   :init (server-mode)
   :diminish (server-buffer-clients . " ⓒ"))
 
-(use-package dired                      ; Edit directories
-  :defer t
-  :config
-  (setq dired-auto-revert-buffer t    ; Revert on re-visiting
-        ;; Better dired flags: `-l' is mandatory, `-a' shows all files, `-h'
-        ;; uses human-readable sizes, and `-F' appends file-type classifiers
-        ;; to file names (for better highlighting)
-        dired-listing-switches "-alhF"
-        dired-ls-F-marks-symlinks t   ; -F marks links with @
-        ;; Inhibit prompts for simple recursive operations
-        dired-recursive-copies 'always
-        ;; Auto-copy to other Dired split window
-        dired-dwim-target t)
-
-  (when (or (memq system-type '(gnu gnu/linux))
-            (string= (file-name-nondirectory insert-directory-program) "gls"))
-    ;; If we are on a GNU system or have GNU ls, add some more `ls' switches:
-    ;; `--group-directories-first' lists directories before files, and `-v'
-    ;; sorts numbers in file names naturally, i.e. "image1" goes before
-    ;; "image02"
-    (setq dired-listing-switches
-          (concat dired-listing-switches " --group-directories-first -v"))))
-
-(use-package dired-x                    ; Additional tools for Dired
-  :defer nil
-  :commands dired-kill-buffer-jump
-  :bind (("C-c f j" . dired-jump)
-         ("C-x C-j" . dired-jump)
-         ("C-x C-j" . dired-jump)
-         ("C-A-j"       . dired-jump)
-         ("C-A-x C-A-k" . dired-jump-kill-buffer)
-         ("C-A-k"       . dired-jump-kill-buffer)
-         ("C-x C-j"     . dired-jump))
-  :init
-  (add-hook 'dired-mode-hook #'dired-omit-mode)
-  :after dired
-  :config
-  (setq dired-omit-verbose nil)        ; Shut up, dired
-
-  (defun dired-jump-kill-buffer (&rest)
-    (interactive)
-    (let ((buf (current-buffer)))
-      (dired-jump)
-      (kill-buffer buf)))
-
-  (when (eq system-type 'darwin)
-    ;; OS X bsdtar is mostly compatible with GNU Tar
-    (setq dired-guess-shell-gnutar "tar"))
-
-  ;; Diminish dired-omit-mode. We need this hack, because Dired Omit Mode has
-  ;; a very peculiar way of registering its lighter explicitly in
-  ;; `dired-omit-startup'.  We can't just use `:diminish' because the lighter
-  ;; isn't there yet after dired-omit-mode is loaded.
-  (add-function :after (symbol-function 'dired-omit-startup)
-                (lambda () (diminish 'dired-omit-mode " ⓞ"))
-                '((name . dired-omit-mode-diminish))))
-
 (use-package ignoramus                  ; Ignore uninteresting files everywhere
   :ensure t
   :config
@@ -645,12 +568,6 @@ mouse-3: go to end"))))
   :ensure t
   :init (global-hardhat-mode)
   :config (setq hardhat-mode-lighter " Ⓗ"))
-
-(use-package bookmark                   ; Bookmarks for Emacs buffers
-  :bind (("C-c f b" . list-bookmarks))
-  ;; Save bookmarks immediately after a bookmark was added
-  :config (setq bookmark-save-flag 1
-                bookmark-default-file (expand-file-name "bookmarks" user-cache-directory)))
 
 (use-package saveplace                  ; Save point position in files
   :init (save-place-mode 1)
@@ -761,8 +678,6 @@ mouse-3: go to end"))))
     (setq sp-hybrid-kill-entire-symbol t)
     (smartparens-global-mode t) ; YOLO, turn it everywhere
     (show-smartparens-global-mode t) ; show where pairs begin and end
-    
-    
     )
   ;; :bind
   ;; (("C-M-k" . sp-kill-sexp-with-a-twist-of-lime)
