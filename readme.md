@@ -17,3 +17,4 @@ It's very difficult to find any _sane_ configurations in the Emacs world.
 - [x] Paredit is trying to be too smart and doesn't allow to delete _unmatched_ left paren, when it was left there by accident.  
 - [x] Moving sexps around with C-\<arrows\> is a terrible, terrible idea for my muscle memory -> just move word by word
 - [x] Golden ratio for buffers is broken again
+- [x] Copy and pasting in Emacs is completely backwards; 'yank' is used in wrong context and it bother no-one?

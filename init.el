@@ -1279,7 +1279,10 @@ mouse-3: go to end"))))
  ;("C-c s" . create-scratch-buffer)
  ;("M-c" . easy-kill)
  ;("C-a" . prelude-move-beginning-of-line)
- ("C-x k" . kill-this-buffer))
+ ("C-x k" . kill-this-buffer)
+ ("M-p" . yank) ;; yank means to PULL, Emacs has the meaning completely wrong
+ ("M-y" . kill-ring-save) ;; this is TRUE YANK, but it's called like... WTF
+ )
 
 ;; ;; clojure
 ;; (require 'setup-clj)
