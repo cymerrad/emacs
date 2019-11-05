@@ -516,6 +516,7 @@ mouse-3: go to end"))))
           ,(rx bos "*which-key*" eos)
           ,(rx bos "*NeoTree*" eos)))
   :diminish (golden-ratio-mode . "ⓖ"))
+(toggle-golden-ratio)
 
 (use-package windmove                   ; Move between windows with Shift+Arrow
   :disabled t
