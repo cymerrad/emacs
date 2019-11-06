@@ -638,25 +638,33 @@ mouse-3: go to end"))))
   :init (global-undo-tree-mode)
   :diminish undo-tree-mode)
 
-;; (use-package smartparens
-;;   :init
-;;   (bind-key "C-M-f" #'sp-forward-sexp smartparens-mode-map)
-;;   (bind-key "C-M-b" #'sp-backward-sexp smartparens-mode-map)
-;;   (bind-key "C-)" #'sp-forward-slurp-sexp smartparens-mode-map)
-;;   (bind-key "C-(" #'sp-backward-slurp-sexp smartparens-mode-map)
-;;   (bind-key "M-)" #'sp-forward-barf-sexp smartparens-mode-map)
-;;   (bind-key "M-(" #'sp-backward-barf-sexp smartparens-mode-map)
-;;   (bind-key "C-S-s" #'sp-splice-sexp)
-;;   (bind-key "C-M-<backspace>" #'backward-kill-sexp)
-;;   (bind-key "C-M-S-<SPC>" (lambda () (interactive) (mark-sexp -1)))
+(defmacro def-pairs (pairs)
+  "Define functions for pairing. PAIRS is an alist of (NAME . STRING)
+conses, where NAME is the function name that will be created and
+STRING is a single-character string that marks the opening character.
 
-;;   :config
-;;   (smartparens-global-mode t)
+  (def-pairs ((paren . \"(\")
+              (bracket . \"[\"))
 
-;;   (sp-pair "'" nil :actions :rem)
-;;   (sp-pair "`" nil :actions :rem)
-;;   (setq sp-highlight-pair-overlay nil))
+defines the functions WRAP-WITH-PAREN and WRAP-WITH-BRACKET,
+respectively."
+  `(progn
+     ,@(loop for (key . val) in pairs
+             collect
+             `(defun ,(read (concat
+                             "wrap-with-"
+                             (prin1-to-string key)
+                             "s"))
+                  (&optional arg)
+                (interactive "p")
+                (sp-wrap-with-pair ,val)))))
 
+(def-pairs ((paren . "(")
+            (bracket . "[")
+            (brace . "{")
+            (single-quote . "'")
+            (double-quote . "\"")
+            (back-quote . "`")))
 
 (defvar my-lisps '(emacs-mode-hook
 		    lisp-mode-hook
@@ -665,6 +673,7 @@ mouse-3: go to end"))))
 		    clojure-mode-hook
 		    racket-mode-hook))
 
+;; just copied from https://ebzzry.io/en/emacs-pairs/
 ; paired delimiters
 (use-package smartparens
   :ensure t
@@ -680,18 +689,52 @@ mouse-3: go to end"))))
     (smartparens-global-mode t) ; YOLO, turn it everywhere
     (show-smartparens-global-mode t) ; show where pairs begin and end
     )
-  ;; :bind
-  ;; (("C-M-k" . sp-kill-sexp-with-a-twist-of-lime)
-  ;;  ("M-s" . sp-splice-sexp)
-  ;;  ("M-r" . sp-splice-sexp-killing-around)
-  ;;  ("C-)" . sp-forward-slurp-sexp)
-  ;;  ("C-}" . sp-forward-barf-sexp)
-  ;;  ("C-(" . sp-backward-slurp-sexp)
-  ;;  ("C-{" . sp-backward-barf-sexp)
-  ;;  ("M-S" . sp-split-sexp)
-  ;;  ("M-J" . sp-join-sexp)
-  ;; ("C-M-t" . sp-transpose-sexp))
-  )
+  :bind
+  (("C-M-a" . sp-beginning-of-sexp)
+   ("C-M-e" . sp-end-of-sexp)
+
+   ("C-<down>" . sp-down-sexp)
+   ("C-<up>"   . sp-up-sexp)
+   ("M-<down>" . sp-backward-down-sexp)
+   ("M-<up>"   . sp-backward-up-sexp)
+
+   ("C-M-f" . sp-forward-sexp)
+   ("C-M-b" . sp-backward-sexp)
+
+   ("C-M-n" . sp-next-sexp)
+   ("C-M-p" . sp-previous-sexp)
+
+   ("C-S-f" . sp-forward-symbol)
+   ("C-S-b" . sp-backward-symbol)
+
+   ("C-<right>" . sp-forward-slurp-sexp)
+   ("M-<right>" . sp-forward-barf-sexp)
+   ("C-<left>"  . sp-backward-slurp-sexp)
+   ("M-<left>"  . sp-backward-barf-sexp)
+
+   ("C-M-t" . sp-transpose-sexp)
+   ("C-M-k" . sp-kill-sexp)
+   ("C-k"   . sp-kill-hybrid-sexp)
+   ("M-k"   . sp-backward-kill-sexp)
+   ("C-M-y" . sp-copy-sexp)
+   ("C-M-d" . delete-sexp)
+
+   ("M-<backspace>" . backward-kill-word)
+   ("C-<backspace>" . sp-backward-kill-word)
+   ([remap sp-backward-kill-word] . backward-kill-word)
+
+   ("M-[" . sp-backward-unwrap-sexp)
+   ("M-]" . sp-unwrap-sexp)
+
+   ("C-x C-t" . sp-transpose-hybrid-sexp)
+
+   ("C-c ("  . wrap-with-parens)
+   ("C-c ["  . wrap-with-brackets)
+   ("C-c {"  . wrap-with-braces)
+   ("C-c '"  . wrap-with-single-quotes)
+   ("C-c \"" . wrap-with-double-quotes)
+   ("C-c _"  . wrap-with-underscores)
+   ("C-c `"  . wrap-with-back-quotes)))
 (require 'smartparens-config)
 
 
@@ -1273,6 +1316,7 @@ mouse-3: go to end"))))
 ; ("C-c C-e" . eval-and-replace)
 ; ("C-/" . comment-or-uncomment-region-or-line)
  ("C-/" . toggle-comment-on-line)
+ ("<S-delete>" . kill-whole-line)
 ; ("C-c d" . prelude-duplicate-current-line-or-region)
 ; ("C-c M-d" . prelude-duplicate-and-comment-current-line-or-region)
  ;("C-c j" . start-or-switch-to-shell)
@@ -1282,6 +1326,7 @@ mouse-3: go to end"))))
  ("C-x k" . kill-this-buffer)
  ("M-p" . yank) ;; yank means to PULL, Emacs has the meaning completely wrong
  ("M-y" . kill-ring-save) ;; this is TRUE YANK, but it's called like... WTF
+ ("C-j" . nil)
  )
 
 ;; ;; clojure

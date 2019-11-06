@@ -7,8 +7,6 @@ It's very difficult to find any _sane_ configurations in the Emacs world.
 - [ ] Vim's % to move to a closing paren ([solution](https://www.emacswiki.org/emacs/NavigatingParentheses))
 - [ ] Comment/uncomment line/REGION with C-/ (I think I will be slowly heading towards VSCode controls...)
 - [ ] Text manipulation around sentences is useless for programming -> change definition of a sentence to one revolving around parens
-- [ ] C-\<left/right-arrow\> moves always too far; it should stop before brackets and line beginnings  
-- [ ] S-DEL for deleting whole line
 - [ ] which-func doesn't really work well
 
 
@@ -18,3 +16,8 @@ It's very difficult to find any _sane_ configurations in the Emacs world.
 - [x] Moving sexps around with C-\<arrows\> is a terrible, terrible idea for my muscle memory -> just move word by word
 - [x] Golden ratio for buffers is broken again
 - [x] Copy and pasting in Emacs is completely backwards; 'yank' is used in wrong context and it bother no-one?
+- [x] S-DEL for deleting whole line
+
+# Changed my mind
+- C-\<left/right-arrow\> moves always too far; it should stop before brackets and line beginnings  
+  I'll stick to slurping and barfing with those keys
