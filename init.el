@@ -20,28 +20,6 @@
 (setq load-prefer-newer t)
 
 
-;; (custom-set-variables
-;;  ;; custom-set-variables was added by Custom.
-;;  ;; If you edit it by hand, you could mess it up, so be careful.
-;;  ;; Your init file should contain only one such instance.
-;;  ;; If there is more than one, they won't work right.
-;;  '(ansi-color-faces-vector
-;;    [default default default italic underline success warning error])
-;;  '(custom-enabled-themes (quote (solarized-dark)))
-;;  '(custom-safe-themes
-;;    (quote
-;;     ("0598c6a29e13e7112cfbc2f523e31927ab7dce56ebb2016b567e1eff6dc1fd4f" default)))
-;;  '(inhibit-startup-screen t)
-;;  '(package-selected-packages
-;;    (quote
-;;     (solarized-theme zop-to-char page-break-lines jump-char launch lua-mode clj-refactor cider align-cljlet golden-ratio lispy macrostep expand-region persp-mode projectile swiper ivy-hydra ivy datomic-snippets exec-path-from-shell racket-mode))))
-;; (custom-set-faces
-;;  ;; custom-set-faces was added by Custom.
-;;  ;; If you edit it by hand, you could mess it up, so be careful.
-;;  ;; Your init file should contain only one such instance.
-;;  ;; If there is more than one, they won't work right.
-;;  )
-
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
@@ -1072,19 +1050,18 @@ respectively."
 ;; ;; racket
 (use-package racket-mode
   :ensure t
-  :load-path "site-lisp/racket-mode/"
-  :mode (("\\.rkt\\'" . racket-mode))
   :config
-  (add-hook 'racket-mode-hook (lambda () (lispy-mode 1)))
+  ;; (add-hook 'racket-mode-hook (lambda () (lispy-mode 1)))
   ;; :config (progn
   ;;           (add-hook 'racket-mode-hook      #'racket-unicode-input-method-enable)
   ;;           (add-hook 'racket-repl-mode-hook #'racket-unicode-input-method-enable))
 
   ;; (lookup-key racket-mode-map (kbd "C-c C-e"))
-  (bind-keys :map racket-mode-map
-             ;; ("C-c m" . racket-macro-expand-map)
-             ("C-c C-c" . racket-send-definition)
-             ("C-c C-e" . racket-send-last-sexp)))
+  ;; (bind-keys :map racket-mode-map
+  ;;            ;; ("C-c m" . racket-macro-expand-map)
+  ;;            ("C-c C-c" . racket-send-definition)
+  ;;            ("C-c C-e" . racket-send-last-sexp))
+  )
 
 
 
