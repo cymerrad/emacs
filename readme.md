@@ -21,3 +21,7 @@ It's very difficult to find any _sane_ configurations in the Emacs world.
 # Changed my mind
 - C-\<left/right-arrow\> moves always too far; it should stop before brackets and line beginnings  
   I'll stick to slurping and barfing with those keys
+
+# WTF commands
+- C-z -> absoulte winner
+- C-k -> recenter-top-bottom
