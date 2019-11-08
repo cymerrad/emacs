@@ -1066,95 +1066,25 @@ respectively."
 ;;   :defer t)
 
 
-
-;;; Racket
-
-;; (use-package golden-ratio
-;;   :ensure t
-;;   :init
-;;   (defun ze-toggle-golden-ratio ()
-;;     (interactive)
-;;     (if (bound-and-true-p golden-ratio-mode)
-;;         (progn
-;;           (golden-ratio-mode -1)
-;;           (balance-windows))
-;;       (golden-ratio-mode)
-;;       (golden-ratio)))
-;;   :diminish golden-ratio-mode
-;;   :config
-;;   (progn
-;;     (setq golden-ratio-exclude-modes '("bs-mode"
-;;                                        "calc-mode"
-;;                                        "ediff-mode"
-;;                                        "gud-mode"
-;;                                        "gdb-locals-mode"
-;;                                        "gdb-registers-mode"
-;;                                        "gdb-breakpoints-mode"
-;;                                        "gdb-threads-mode"
-;;                                        "gdb-frames-mode"
-;;                                        "gdb-inferior-io-mode"
-;;                                        "gud-mode"
-;;                                        "gdb-inferior-io-mode"
-;;                                        "gdb-disassembly-mode"
-;;                                        "gdb-memory-mode"
-;;                                        "restclient-mode"
-;;                                        "speedbar-mode"
-;;                                        ))
-
-;;     (add-to-list 'golden-ratio-exclude-buffer-regexp "^\\*[hH]elm.*")
-
-;;     (setq golden-ratio-extra-commands
-;;           (append golden-ratio-extra-commands
-;;                   '(ace-window
-;;                     ace-delete-window
-;;                     ace-select-window
-;;                     ace-swap-window
-;;                     ace-maximize-window
-;;                     avy-pop-mark
-;;                     windmove-left
-;;                     windmove-right
-;;                     windmove-up
-;;                     windmove-down
-;;                     select-window-0
-;;                     select-window-1
-;;                     select-window-2
-;;                     select-window-3
-;;                     select-window-4
-;;                     select-window-5
-;;                     select-window-6
-;;                     select-window-7
-;;                     select-window-8
-;;                     select-window-9
-;;                     buf-move-left
-;;                     buf-move-right
-;;                     buf-move-up
-;;                     buf-move-down
-;;                     ess-eval-buffer-and-go
-;;                     ess-eval-function-and-go
-;;                     ess-eval-line-and-go
-;;                     other-window
-;;                     ze-other-window
-;;                     quit-window)))))
-
 ;; ;; clojure
 ;; (require 'setup-clj)
 
 ;; ;; racket
-;; (use-package racket-mode
-;;   ;; :ensure t
-;;   :load-path "site-lisp/racket-mode/"
-;;   :mode (("\\.rkt\\'" . racket-mode))
-;;   :config
-;;   (add-hook 'racket-mode-hook (lambda () (lispy-mode 1)))
-;;   ;; :config (progn
-;;   ;;           (add-hook 'racket-mode-hook      #'racket-unicode-input-method-enable)
-;;   ;;           (add-hook 'racket-repl-mode-hook #'racket-unicode-input-method-enable))
+(use-package racket-mode
+  :ensure t
+  :load-path "site-lisp/racket-mode/"
+  :mode (("\\.rkt\\'" . racket-mode))
+  :config
+  (add-hook 'racket-mode-hook (lambda () (lispy-mode 1)))
+  ;; :config (progn
+  ;;           (add-hook 'racket-mode-hook      #'racket-unicode-input-method-enable)
+  ;;           (add-hook 'racket-repl-mode-hook #'racket-unicode-input-method-enable))
 
-;;   ;; (lookup-key racket-mode-map (kbd "C-c C-e"))
-;;   (bind-keys :map racket-mode-map
-;;              ;; ("C-c m" . racket-macro-expand-map)
-;;              ("C-c C-c" . racket-send-definition)
-;;              ("C-c C-e" . racket-send-last-sexp)))
+  ;; (lookup-key racket-mode-map (kbd "C-c C-e"))
+  (bind-keys :map racket-mode-map
+             ;; ("C-c m" . racket-macro-expand-map)
+             ("C-c C-c" . racket-send-definition)
+             ("C-c C-e" . racket-send-last-sexp)))
 
 
 
@@ -1328,28 +1258,6 @@ respectively."
  ("M-y" . kill-ring-save) ;; this is TRUE YANK, but it's called like... WTF
  ("C-j" . nil)
  )
-
-;; ;; clojure
-;; (require 'setup-clj)
-
-;; ;; racket
-;; (use-package racket-mode
-;;   ;; :ensure t
-;;   :load-path "site-lisp/racket-mode/"
-;;   :mode (("\\.rkt\\'" . racket-mode))
-;;   :config
-;;   (add-hook 'racket-mode-hook (lambda () (lispy-mode 1)))
-;;   ;; :config (progn
-;;   ;;           (add-hook 'racket-mode-hook      #'racket-unicode-input-method-enable)
-;;   ;;           (add-hook 'racket-repl-mode-hook #'racket-unicode-input-method-enable))
-
-;;   ;; (lookup-key racket-mode-map (kbd "C-c C-e"))
-;;   (bind-keys :map racket-mode-map
-;;              ;; ("C-c m" . racket-macro-expand-map)
-;;              ("C-c C-c" . racket-send-definition)
-;;              ("C-c C-e" . racket-send-last-sexp)))
-
-
 
 
 
