@@ -1160,13 +1160,14 @@ respectively."
      ("C-x C-f" . helm-find-files)
      ("C-x C-p" . projectile-find-file)
      ("C-c p d" . projectile-dired)
-     ("C-c p D" . projectile-find-dir))
+     ("C-c p D" . projectile-find-dir)
+     ("C-c p" . projectile-command-map))
     (setq projectile-known-projects-file (expand-file-name  "projectile-bookmarks.eld" user-cache-directory)
           projectile-cache-file (expand-file-name  "projectile.cache" user-cache-directory))
     (setq projectile-enable-caching t)
     (setq projectile-require-project-root nil)
-    (setq projectile-completion-system 'ido)
-    (add-to-list 'projectile-globally-ignored-files ".DS_Store")
+    ;; (setq projectile-completion-system 'ido)
+    ;; (add-to-list 'projectile-globally-ignored-files ".DS_Store")
 
     (use-package cc-mode
       :defer t
@@ -1201,10 +1202,13 @@ respectively."
 ;; No, thank you, I don't need the Git integration
 (setq vc-handled-backends nil)
 
+;; TODO make it work on multiple highlighted lines
 (defun toggle-comment-on-line ()
   "comment or uncomment current line"
   (interactive)
   (comment-or-uncomment-region (line-beginning-position) (line-end-position)))
+
+;; 
 
 ;; WHY ARE MOST OF EMACS SHORTCUTS ABSOLUTELY USELESS
 (bind-keys
@@ -1217,7 +1221,7 @@ respectively."
  ;("M-t" . completion-at-point)
 ; ("<f1>" . help-command)
 ; ("C-w" . kill-region-or-backward-word)
- ("C-w" . backward-kill-word)
+ ("C-w" . backward-kill-word) ;; TODO make it better
 ; ("<C-tab>" . ze-other-window)
 ; ("C-x <C-tab>" . i-meant-other-window)
 ; ("C-c C-e" . eval-and-replace)
@@ -1236,7 +1240,6 @@ respectively."
  ("C-j" . nil)
  )
 
-
-
-
-
+;; start to imitate VSCode?
+(bind-keys
+ ("C-S-P" . helm-M-x))
