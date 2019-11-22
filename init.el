@@ -1206,7 +1206,8 @@ respectively."
 (defun toggle-comment-on-line ()
   "comment or uncomment current line"
   (interactive)
-  (comment-or-uncomment-region (line-beginning-position) (line-end-position)))
+  (progn
+    (comment-or-uncomment-region (line-beginning-position) (line-end-position))))
 
 ;; 
 
@@ -1239,6 +1240,7 @@ respectively."
  ("M-y" . kill-ring-save) ;; this is TRUE YANK, but it's called like... WTF
  ("C-j" . nil)
  )
+  
 
 ;; start to imitate VSCode?
 (bind-keys
